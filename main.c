@@ -17,7 +17,8 @@ typedef struct {
     int cadastroGeral();
     int menuAlunos();
     void cadastrarAlunos (cadastroAlunos listaAlunos[], int qtdAlunos);
-
+	void listarAluno(cadastroAlunos listaAlunos[], int qtdAlunos);
+	
 int main(){
     	
     cadastroAlunos listaAlunos[TamanhoAlunos]; 
@@ -52,6 +53,10 @@ int main(){
 				case 1 :{
 				cadastrarAlunos (listaAlunos, qtdAlunos);
                 qtdAlunos++;
+        		break;
+            	}
+            	case 2 :{
+				listarAluno(listaAlunos, qtdAlunos);
         		break;
             	}
 					
@@ -136,4 +141,18 @@ int main(){
         scanf("%d", &listaAlunos[qtdAlunos].cpf);
        
 
+  }
+  
+  void listarAluno(cadastroAlunos listaAlunos[], int qtdAlunos){
+  	printf("\nLista de alunos: \n");
+    for (int i = 0; i < qtdAlunos; i++){
+    printf("\nMatricula: %d\n", listaAlunos[i].matricula);
+    printf("Nome: %s\n", listaAlunos[i].nome);
+    printf("Sexo: %c\n", listaAlunos[i].sexo);
+    printf("Data de nascimento: %d/%d/%d\n", listaAlunos[i].diaNascimento, 
+											 listaAlunos[i].mesNascimento, 
+											 listaAlunos[i].anoNascimento);
+    printf("CPF: %d\n", listaAlunos[i].cpf);
+    }
+    
   }
