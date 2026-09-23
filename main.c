@@ -6,6 +6,7 @@
 #define TamAlunos 3
 #define TamProfessores 3
 #define TamDisciplinas 3
+#define qtdMatriculadosDisciplina 3
 
 #define CADASTRO_SUCESSO -1
 #define NAO_LOCALIZADO -2
@@ -34,7 +35,6 @@ typedef struct {
     char sexo;
     Data dataDeNascimentoProf;
     char cpf[12];
-
 } cadastroProfessores; 
 
 typedef struct {
@@ -42,6 +42,7 @@ typedef struct {
     char nome[50];
     int semestre;
     char professor[50];
+    int qtdAlunosMatriculados;
 
 } cadastroDisciplinas; 
 
@@ -66,6 +67,14 @@ typedef struct {
     int atualizarDisciplina(cadastroDisciplinas listaDisciplinas[], int qtdDisciplinas);
     int excluirDisciplina(cadastroDisciplinas listaDisciplinas[], int qtdDisciplinas);
 
+    int menuRelatorios();
+    void listaAlunosOrdemNome (cadastroAlunos listaAlunos[], int qtdAlunos);
+    void listaAlunoPorSexo (cadastroAlunos listaAlunos[], int qtdAlunos);
+    void listaAlunoOrdemDataNascimento (cadastroAlunos listaAlunos[], int qtdAlunos);
+    void listaProfessorOrdemNome (cadastroProfessores listaProfessores[], int qtdProfessores);
+    void listaProfPorSexo (cadastroProfessores listaProfessores[], int qtdProfessores);
+    void listaProfOrdemDataNascimento (cadastroProfessores listaProfessores[], int qtdProfessores);
+
 int main(){
 
     int opcao;
@@ -85,6 +94,11 @@ int main(){
     int opcaoDisciplina;
     int sairDisciplina = 0;
     int qtdDisciplinas = 0;
+
+
+    int opcaoRelatorio;
+    int sairRelatorio = 0;
+    
 
         while (!sair){
             
@@ -262,6 +276,70 @@ int main(){
                 }
                 break;
             }
+            case 4 :{
+                printf("\nRelatorios\n");
+                while (!sairRelatorio){
+                    opcaoRelatorio = menuRelatorios();
+
+                    switch (opcaoRelatorio){
+                        case 0: {
+                            sairRelatorio = 1;
+                            break;
+                        }
+                        case 1: {
+                        listaAlunosOrdemNome (listaAlunos, qtdAlunos);
+                        break;
+                        }
+                        case 2:{
+                        //lista de aluno ordenado por parte do nome.
+                        break;
+                        }
+                        case 3:{
+                        listaAlunoPorSexo (listaAlunos, qtdAlunos);
+                        break;
+                        }
+                        case 4:{
+                        listaAlunoOrdemDataNascimento (listaAlunos, qtdAlunos);
+                        break;
+                        }
+                        case 5:{
+                        listaProfessorOrdemNome (listaProfessores, qtdProfessores);
+                        break;
+                        }
+                        case 6:{
+                        //lista de professor ordenado por parte do nome.
+                        break;
+                        }
+                        case 7:{
+                        listaProfPorSexo (listaProfessores, qtdProfessores);
+                        break;
+                        }
+                        case 8:{
+                        listaProfOrdemDataNascimento (listaProfessores, qtdProfessores);
+                        break;
+                        }
+                        case 9:{
+                        // Lista de disciplinas com alunos matriculados.
+                        break;
+                        }
+                        case 10:{
+                        //Lista de alunos matriculados em pelo menos 3 disciplinas.
+                        break;
+                        }
+                        case 11:{
+                        //Lista de disciplinas que extrapolam 40 vagas.
+                        break;
+                        }
+                        case 12:{
+                        //Aniversariante do mês.
+                        break;
+                        }
+                        default: {
+                            printf("\nOpcao invalida!\n");
+                        }
+                    }
+                }
+            }
                 default: printf("\nOpcao invalida! \n");
             } 
          }
@@ -279,6 +357,7 @@ int main(){
         printf("1 - Alunos \n");
         printf("2 - Professores \n");
         printf("3 - Disciplinas \n");
+        printf("4 - Relatorios \n");
         
         scanf("%d", &opcao);
         
@@ -722,4 +801,269 @@ int excluirDisciplina(cadastroDisciplinas listaDisciplinas[], int qtdDisciplinas
     } else {
         return NAO_LOCALIZADO;
     }
+}
+
+int menuRelatorios(){
+    int opcaoRelatorio;
+
+    printf("\nRelatorios\n");
+    printf("Digite a opcao: \n");
+    printf("0 - Voltar ao menu principal\n");
+    printf("1 - Lista de alunos ordenados por nome \n");
+    printf("2 - Lista de alunos (por parte do nome) \n");
+    printf("3 - Lista de alunos por sexo \n");
+    printf("4 - Lista de alunos por data de nascimento \n");
+    printf("5 - Lista de professores ordenados por nome \n");
+    printf("6 - Lista de professores (por parte do nome) \n");
+    printf("7 - Lista de professores por sexo \n");
+    printf("8 - Lista de professores por data de nascimento \n");
+    printf("9 - Lista de disciplinas com alunos matriculados \n");
+    printf("10 - Lista de alunos matriculados em menos de 3 disciplinas \n");
+    printf("11 - Lista de disciplinas que extrapolam 40 vagas \n");
+    printf ("12 - Aniversariantes do mes \n");
+
+    scanf("%d", &opcaoRelatorio);
+    
+    return opcaoRelatorio;
+
+}
+
+void listaAlunosOrdemNome (cadastroAlunos listaAlunos[], int qtdAlunos){
+    if(qtdAlunos == 0){
+        printf("\nNao ha alunos cadastrados.\n");
+        return; 
+    }
+
+    cadastroAlunos listaOrdenada[TamAlunos];
+    for(int i = 0; i < qtdAlunos; i++){
+        listaOrdenada[i] = listaAlunos[i];
+    }
+
+    for (int i = 0; i < qtdAlunos - 1; i++){
+         for (int j = 0; j < qtdAlunos - 1 - i; j++){
+            if (strcmp (listaOrdenada[j].nome , listaOrdenada[j + 1].nome) > 0){
+
+                cadastroAlunos aux = listaOrdenada[j];
+                listaOrdenada[j] = listaOrdenada[j + 1];
+                listaOrdenada[j + 1] = aux;
+            }
+    
+    printf("\nAlunos ordenados por nome: \n");
+    for (int i = 0; i < qtdAlunos; i++){
+    printf("\nMatricula: %d\n", listaOrdenada[i].matricula);
+    printf("Nome: %s\n", listaOrdenada[i].nome);
+    printf("Sexo: %c\n", listaOrdenada[i].sexo);
+    printf("Data de nascimento: %d/%d/%d\n", listaOrdenada[i].dataDeNascimento.dia, 
+											 listaOrdenada[i].dataDeNascimento.mes, 
+											 listaOrdenada[i].dataDeNascimento.ano);
+    printf("CPF: %s\n", listaOrdenada[i].cpf);
+    }
+
+        }
+    }
+}
+
+void listaAlunoPorSexo (cadastroAlunos listaAlunos[], int qtdAlunos){
+
+    if (qtdAlunos == 0){
+        printf("\nNao ha alunos cadastrados.\n");
+        return;
+    }
+
+    char caracterFM;
+    printf("Digite a opcao F ou M: ");
+    scanf(" %c", &caracterFM);
+
+    char caracterProcurado = toupper(caracterFM);
+    if(caracterProcurado != 'F' && caracterProcurado != 'M'){
+        printf("Opcao invalida! Digite F ou M.");
+        while (getchar() != '\n');
+        return;
+    }
+
+    int encontrado = 0;
+    
+    printf("\nLista de alunos do sexo %c \n", caracterProcurado);
+    for (int i = 0; i < qtdAlunos; i++){
+        if (listaAlunos[i].sexo == caracterProcurado){
+            printf("\nMatricula: %d\n", listaAlunos[i].matricula);
+            printf("Nome: %s\n", listaAlunos[i].nome);
+            printf("Sexo: %c\n", listaAlunos[i].sexo);
+            printf("Data de nascimento: %d/%d/%d\n", listaAlunos[i].dataDeNascimento.dia, 
+											 listaAlunos[i].dataDeNascimento.mes, 
+											 listaAlunos[i].dataDeNascimento.ano);
+            printf("CPF: %s\n", listaAlunos[i].cpf);
+
+            encontrado++;
+            }
+            
+        }
+        if(encontrado == 0){
+            printf("\nNenhum aluno do sexo %c foi encontrado.\n", caracterProcurado);
+        } else {
+            printf("\nTotal de alunos do sexo %c encontrados: %d.\n", caracterProcurado, encontrado);
+        }
+        while (getchar() != '\n');
+    
+}
+
+int organizarDatas (Data d1, Data d2){
+    if (d1.ano != d2.ano){
+        return d1.ano - d2.ano;
+    } if (d1.mes != d2.mes){
+        return d1.mes - d2.mes;
+    } else {
+        return d1.dia - d2.dia;
+    }
+}
+
+void listaAlunoOrdemDataNascimento (cadastroAlunos listaAlunos[], int qtdAlunos){
+
+     if (qtdAlunos == 0){
+        printf("\nNao ha alunos cadastrados.\n");
+        return;
+    }
+
+    cadastroAlunos ordenadoData[TamAlunos];
+    for(int i = 0; i < qtdAlunos; i++){
+        ordenadoData[i] = listaAlunos[i];
+    }
+
+    for (int i = 0; i < qtdAlunos - 1; i++){
+         for (int j = 0; j < qtdAlunos - 1 - i; j++){
+            if(organizarDatas(ordenadoData[j].dataDeNascimento, 
+                            ordenadoData[j+1].dataDeNascimento) > 0){
+                cadastroAlunos aux = ordenadoData[j];
+                ordenadoData[j] = ordenadoData[j+1];
+                ordenadoData[j+1] = aux;
+            }
+         }
+    }
+
+    printf("\nAlunos por ordem de data de nascimento: \n");
+     for (int i = 0; i < qtdAlunos; i++){
+    printf("\nMatricula: %d\n", ordenadoData[i].matricula);
+    printf("Nome: %s\n", ordenadoData[i].nome);
+    printf("Sexo: %c\n", ordenadoData[i].sexo);
+    printf("Data de nascimento: %d/%d/%d\n", ordenadoData[i].dataDeNascimento.dia, 
+											 ordenadoData[i].dataDeNascimento.mes, 
+											 ordenadoData[i].dataDeNascimento.ano);
+    printf("CPF: %s\n", ordenadoData[i].cpf);
+    }
+
+}
+
+void listaProfessorOrdemNome (cadastroProfessores listaProfessores[], int qtdProfessores){
+    if(qtdProfessores == 0){
+        printf("\nNao ha professores cadastrados.\n");
+        return; 
+    }
+
+    cadastroProfessores listaOrdenadaProf[TamProfessores];
+    for(int i = 0; i < qtdProfessores; i++){
+        listaOrdenadaProf[i] = listaProfessores[i];
+    }
+
+    for (int i = 0; i < qtdProfessores - 1; i++){
+         for (int j = 0; j < qtdProfessores - 1 - i; j++){
+            if (strcmp (listaOrdenadaProf[j].nome , listaOrdenadaProf[j + 1].nome) > 0){
+
+                cadastroProfessores aux = listaOrdenadaProf[j];
+                listaOrdenadaProf[j] = listaOrdenadaProf[j + 1];
+                listaOrdenadaProf[j + 1] = aux;
+            }
+
+    printf("\nProfessores ordenados por nome: \n");
+    for (int i = 0; i < qtdProfessores; i++){
+    printf("\nMatricula: %d\n", listaOrdenadaProf[i].id);
+    printf("Nome: %s\n", listaOrdenadaProf[i].nome);
+    printf("Sexo: %c\n", listaOrdenadaProf[i].sexo);
+    printf("Data de nascimento: %d/%d/%d\n", listaOrdenadaProf[i].dataDeNascimentoProf.dia, 
+											 listaOrdenadaProf[i].dataDeNascimentoProf.mes, 
+											 listaOrdenadaProf[i].dataDeNascimentoProf.ano);
+    printf("CPF: %s\n", listaOrdenadaProf[i].cpf);
+    }
+
+        }
+    }
+}
+
+void listaProfPorSexo (cadastroProfessores listaProfessores[], int qtdProfessores){
+
+    if (qtdProfessores == 0){
+        printf("\nNao ha professores cadastrados.\n");
+        return;
+    }
+
+    char caracterFM;
+    printf("Digite a opcao F ou M: ");
+    scanf(" %c", &caracterFM);
+
+    char caracterProcurado = toupper(caracterFM);
+    if(caracterProcurado != 'F' && caracterProcurado != 'M'){
+        printf("Opcao invalida! Digite F ou M.");
+        while (getchar() != '\n');
+        return;
+    }
+
+    int encontrado = 0;
+    
+    printf("\nLista de professores do sexo %c \n", caracterProcurado);
+    for (int i = 0; i < qtdProfessores; i++){
+        if (listaProfessores[i].sexo == caracterProcurado){
+            printf("\nMatricula: %d\n", listaProfessores[i].id);
+            printf("Nome: %s\n", listaProfessores[i].nome);
+            printf("Sexo: %c\n", listaProfessores[i].sexo);
+            printf("Data de nascimento: %d/%d/%d\n", listaProfessores[i].dataDeNascimentoProf.dia, 
+											 listaProfessores[i].dataDeNascimentoProf.mes, 
+											 listaProfessores[i].dataDeNascimentoProf.ano);
+            printf("CPF: %s\n", listaProfessores[i].cpf);
+
+            encontrado++;
+            }
+            
+        }
+        if(encontrado == 0){
+            printf("\nNenhum professor do sexo %c foi encontrado.\n", caracterProcurado);
+        } else {
+            printf("\nTotal de professor do sexo %c encontrados: %d.\n", caracterProcurado, encontrado);
+        }
+        while (getchar() != '\n');
+    
+}
+
+void listaProfOrdemDataNascimento (cadastroProfessores listaProfessores[], int qtdProfessores){
+
+     if (qtdProfessores == 0){
+        printf("\nNao ha professores cadastrados.\n");
+        return;
+    }
+
+    cadastroProfessores ordenadoData[TamAlunos];
+    for(int i = 0; i < qtdProfessores; i++){
+        ordenadoData[i] = listaProfessores[i];
+    }
+
+    for (int i = 0; i < qtdProfessores - 1; i++){
+         for (int j = 0; j < qtdProfessores - 1 - i; j++){
+            if(organizarDatas(ordenadoData[j].dataDeNascimentoProf, 
+                            ordenadoData[j+1].dataDeNascimentoProf) > 0){
+                cadastroProfessores aux = ordenadoData[j];
+                ordenadoData[j] = ordenadoData[j+1];
+                ordenadoData[j+1] = aux;
+            }
+         }
+    }
+
+    printf("\nProfessores por ordem de data de nascimento: \n");
+     for (int i = 0; i < qtdProfessores; i++){
+    printf("\nMatricula: %d\n", ordenadoData[i].id);
+    printf("Nome: %s\n", ordenadoData[i].nome);
+    printf("Sexo: %c\n", ordenadoData[i].sexo);
+    printf("Data de nascimento: %d/%d/%d\n", ordenadoData[i].dataDeNascimentoProf.dia, 
+											 ordenadoData[i].dataDeNascimentoProf.mes, 
+											 ordenadoData[i].dataDeNascimentoProf.ano);
+    printf("CPF: %s\n", ordenadoData[i].cpf);
+    }
+
 }
