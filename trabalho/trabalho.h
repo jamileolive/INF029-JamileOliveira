@@ -10,7 +10,7 @@
 //  O aluno deve preencher seus dados abaixo, e implementar as questÃµes do trabalho
 
 //  ----- Dados do Aluno -----
-//  Nome:
+//  Nome: 
 //  email:
 //  MatrÃ­cula:
 //  Semestre:
@@ -19,8 +19,8 @@
 // Ãšltima atualizaÃ§Ã£o: 07/05/2021
 
 // #################################################
-#ifndef TRABALHO1_H
-#define TRABALHO1_H
+#ifndef TRABALHO_H
+#define TRABALHO_H
 
 typedef struct DQ
 {
