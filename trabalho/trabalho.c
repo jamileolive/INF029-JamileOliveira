@@ -10,10 +10,10 @@
 //  O aluno deve preencher seus dados abaixo, e implementar as questões do trabalho
 
 //  ----- Dados do Aluno -----
-//  Nome: Jamile Silva de Oliveira
-//  email: jamilesiolive@gmail.com
-//  Matrícula: 20252160041
-//  Semestre: 2
+//  Nome: 
+//  email: 
+//  Matrícula:
+//  Semestre:
 
 //  Copyright © 2016 Renato Novais. All rights reserved.
 // Última atualização: 07/05/2021 - 19/08/2016 - 17/10/2025
@@ -23,6 +23,11 @@
 #include <stdio.h>
 #include "trabalho.h" 
 #include <stdlib.h>
+
+#define TAM_DATA 12
+#define TAM_DIA 3
+#define TAM_MES 3
+#define TAM_ANO 5
 
 DataQuebrada quebraData(char data[]);
 
@@ -94,14 +99,81 @@ int q1(char data[])
   int datavalida = 1;
 
   //quebrar a string data em strings sDia, sMes, sAno
-
-
+	char sDia[TAM_DIA];
+	char sMes[TAM_MES];
+	char sAno[TAM_ANO];
+	
+	int i = 0;
+	int j = 0; 
+	while (data[i] != '/'){
+	sDia[j] = data[i];
+		i++;
+		j++;
+	}
+	sDia[j] = '\0';
+	i = i + 1;
+	
+	int k = 0;
+	while (data[i] != '/'){
+	sMes[k] = data[i];
+	i++;
+	k++;
+	}
+	sMes[k] = '\0';
+	i = i + 1;
+	
+	int l = 0;
+	while (data[i] != '\0'){
+	sAno[l] = data[i];
+	i++;
+	l++;
+	}
+	sAno[l] = '\0';
+	
+	int dia = atoi(sDia);
+	int mes = atoi(sMes);
+	int ano = atoi(sAno);
+	
+	if (mes >= 1 && mes <= 12) {
+	datavalida = 1;
+	
+	if (mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12){
+		if (dia >= 1 && dia <= 31){
+			datavalida = 1;
+		} else {
+			datavalida = 0;
+		}
+	}else if (mes == 4 || mes == 6 || mes == 9 || mes == 11){
+		if (dia >= 1 && dia <= 30){
+			datavalida = 1;
+		} else {
+			datavalida = 0;
+		}
+	}else if (mes == 2) {
+    if ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0)) {
+        if (dia >= 1 && dia <= 29) {
+            datavalida = 1;
+        } else {
+            datavalida = 0;
+        }
+    } else { 
+        if (dia >= 1 && dia <= 28) {
+            datavalida = 1;
+        } else {
+            datavalida = 0;
+        }
+    	}
+	}		
+	else {
+	datavalida = 0;
+	}
   //printf("%s\n", data);
 
   if (datavalida)
       return 1;
   else
       return 0;
+}
 }
 
 
