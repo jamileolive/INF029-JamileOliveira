@@ -231,9 +231,41 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
  */
 int q3(char *texto, char c, int isCaseSensitive)
 {
-    int qtdOcorrencias = -1;
+    int qtdOcorrencias = 0;
+	int cont = 0;
+	char auxC = c;
+	char letraAtual;
+	
+	
+	if(isCaseSensitive != 1){
+		if(auxC >= 'a' && auxC <= 'z'){
+				auxC = auxC - 32;
+		}
+	}
+	
+	int i = 0;
+	while(texto[i] != '\0'){
+		
+		if(isCaseSensitive == 1){
+			if(texto[i] == auxC){
+			qtdOcorrencias++;
+		}
+	} else {
+		
+		letraAtual = texto[i];
+		
+		if (letraAtual >= 'a' && letraAtual <= 'z') {	
+		letraAtual = letraAtual - 32;
+		}
+		if(letraAtual == auxC){
+			qtdOcorrencias++;
+			}
+		}
 
-    return qtdOcorrencias;
+	i++;
+}
+
+	return qtdOcorrencias;
 }
 
 /*
