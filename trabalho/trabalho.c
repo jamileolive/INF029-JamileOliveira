@@ -232,7 +232,6 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
 int q3(char *texto, char c, int isCaseSensitive)
 {
     int qtdOcorrencias = 0;
-	int cont = 0;
 	char auxC = c;
 	char letraAtual;
 	
