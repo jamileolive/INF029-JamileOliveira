@@ -105,7 +105,7 @@ int q1(char data[])
 	
 	int i = 0;
 	int j = 0; 
-	while (data[i] != '/'){
+	while (data[i] != '/' && data[i] != '\0'){
 	sDia[j] = data[i];
 		i++;
 		j++;
@@ -114,7 +114,7 @@ int q1(char data[])
 	i = i + 1;
 	
 	int k = 0;
-	while (data[i] != '/'){
+	while (data[i] != '/' && data[i] != '\0'){
 	sMes[k] = data[i];
 	i++;
 	k++;
@@ -134,46 +134,47 @@ int q1(char data[])
 	int mes = atoi(sMes);
 	int ano = atoi(sAno);
 	
-	if (mes >= 1 && mes <= 12) {
-	datavalida = 1;
-	
-	if (mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12){
-		if (dia >= 1 && dia <= 31){
-			datavalida = 1;
-		} else {
-			datavalida = 0;
+		if (mes >= 1 && mes <= 12) {
+		
+		if (mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12){
+			if (dia >= 1 && dia <= 31){
+				datavalida = 1;
+			} else {
+				datavalida = 0;
+			}
+		} else if (mes == 4 || mes == 6 || mes == 9 || mes == 11){
+			if (dia >= 1 && dia <= 30){
+				datavalida = 1;
+			} else {
+				datavalida = 0;
+			}
+		} else if (mes == 2) {
+			// Verifica se o ano é bissexto
+			if ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0)) {
+				if (dia >= 1 && dia <= 29) {
+					datavalida = 1;
+				} else {
+					datavalida = 0;
+				}
+			} else { 
+				// Ano NÃO bissexto
+				if (dia >= 1 && dia <= 28) {
+					datavalida = 1;
+				} else {
+					datavalida = 0;
+				}
+			}
 		}
-	}else if (mes == 4 || mes == 6 || mes == 9 || mes == 11){
-		if (dia >= 1 && dia <= 30){
-			datavalida = 1;
-		} else {
-			datavalida = 0;
-		}
-	}else if (mes == 2) {
-    if ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0)) {
-        if (dia >= 1 && dia <= 29) {
-            datavalida = 1;
-        } else {
-            datavalida = 0;
-        }
-    } else { 
-        if (dia >= 1 && dia <= 28) {
-            datavalida = 1;
-        } else {
-            datavalida = 0;
-        }
-    	}
-	}		
-	else {
-	datavalida = 0;
-	}
-  //printf("%s\n", data);
 
-  if (datavalida)
+	} else {
+		datavalida = 0; // Mês inválido
+	}
+	
+	if (datavalida)
       return 1;
   else
       return 0;
-}
+	
 }
 
 
@@ -296,7 +297,29 @@ int q5(int num)
 
 int q6(int numerobase, int numerobusca)
 {
-    int qtdOcorrencias;
+    int qtdOcorrencias = 0;
+    int tamBusca = 0;
+    int auxBusca = numerobusca;
+
+    //tamanho do numero de busca
+    while(auxBusca != 0){
+    	auxBusca = auxBusca / 10;
+    	tamBusca++;
+	}
+    
+	int divisor = 1;
+	for(int i = 0; i < tamBusca; i++){
+		divisor = divisor * 10;
+		}
+	 
+	int digito;
+	while(numerobase >= numerobusca){
+	digito = numerobase % divisor;
+	if(digito == numerobusca){
+		qtdOcorrencias++;
+	}
+	numerobase = numerobase / 10;
+	}
     return qtdOcorrencias;
 }
 
