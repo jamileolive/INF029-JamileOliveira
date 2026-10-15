@@ -199,6 +199,11 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
     //calcule os dados e armazene nas três variáveis a seguir
     DiasMesesAnos dma;
 
+	 DiasMesesAnos dma;
+    dma.qtdDias = 0;
+    dma.qtdMeses = 0;
+    dma.qtdAnos = 0;
+
     if (q1(datainicial) == 0){
       dma.retorno = 2;
       return dma;
@@ -207,8 +212,68 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
       return dma;
     }else{
       //verifique se a data final não é menor que a data inicial
-      
+        
+        int diaInicial = (datainicial[0] - '0') * 10 + (datainicial[1] - '0');
+        int mesInicial = (datainicial[3] - '0') * 10 + (datainicial[4] - '0');
+        int anoInicial = (datainicial[6] - '0') * 1000 + (datainicial[7] - '0') * 100 + (datainicial[8] - '0') * 10 + (datainicial[9] - '0');
+
+        int diaFinal = (datafinal[0] - '0') * 10 + (datafinal[1] - '0');
+        int mesFinal = (datafinal[3] - '0') * 10 + (datafinal[4] - '0');
+        int anoFinal = (datafinal[6] - '0') * 1000 + (datafinal[7] - '0') * 100 + (datafinal[8] - '0') * 10 + (datafinal[9] - '0');
+
+        //verifique se a data final não é menor que a data inicial
+        if (anoInicial > anoFinal) {
+            dma.retorno = 4;
+            return dma;
+        } 
+        else if ((anoInicial == anoFinal) && (mesInicial > mesFinal)) {
+            dma.retorno = 4;
+            return dma;
+        } 
+        else if ((anoInicial == anoFinal) && (mesInicial == mesFinal)) {
+            if (diaInicial > diaFinal) {
+                dma.retorno = 4;
+                return dma;
+            }
+        }
       //calcule a distancia entre as datas
+		 if (diaFinal < diaInicial) {
+            int mesAnterior = mesFinal - 1;
+            int anoDoMesAnterior = anoFinal;
+            
+            
+            if (mesAnterior == 0) {
+                mesAnterior = 12;
+                anoDoMesAnterior--;
+            }
+
+            
+            int diasMesAnterior = 31;
+            if (mesAnterior == 4 || mesAnterior == 6 || mesAnterior == 9 || mesAnterior == 11) {
+                diasMesAnterior = 30;
+            } else if (mesAnterior == 2) {
+                // Verifica bissexto para fevereiro
+                if ((anoDoMesAnterior % 4 == 0 && anoDoMesAnterior % 100 != 0) || (anoDoMesAnterior % 400 == 0)) {
+                    diasMesAnterior = 29;
+                } else {
+                    diasMesAnterior = 28;
+                }
+            }
+
+            diaFinal = diaFinal + diasMesAnterior;
+            mesFinal--; 
+        }
+        dma.qtdDias = diaFinal - diaInicial;
+
+   
+        if (mesFinal < mesInicial) {
+            mesFinal = mesFinal + 12;
+            anoFinal--; 
+        }
+        dma.qtdMeses = mesFinal - mesInicial;
+
+       
+        dma.qtdAnos = anoFinal - anoInicial;
 
 
       //se tudo der certo
