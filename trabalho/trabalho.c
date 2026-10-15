@@ -199,7 +199,6 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
     //calcule os dados e armazene nas três variáveis a seguir
     DiasMesesAnos dma;
 
-	 DiasMesesAnos dma;
     dma.qtdDias = 0;
     dma.qtdMeses = 0;
     dma.qtdAnos = 0;
