@@ -34,13 +34,21 @@ int main()
 {
     //testSomar();
     //testFatorial();
-    //testQ1();
+    testQ1();
     //testQ2();
+<<<<<<< HEAD
     //testQ3();
     //testQ4();
     //testQ5();
     //testQ6();
     testQ7();
+=======
+    testQ3();
+    testQ4();
+    testQ5();
+    testQ6();
+    //testQ7();
+>>>>>>> b90e36760cc64faa5f8f7df2c5804ec693eff60e
 }
 
 int ligado = 0;

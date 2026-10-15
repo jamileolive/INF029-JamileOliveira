@@ -241,7 +241,6 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
             int mesAnterior = mesFinal - 1;
             int anoDoMesAnterior = anoFinal;
             
-            
             if (mesAnterior == 0) {
                 mesAnterior = 12;
                 anoDoMesAnterior--;
