@@ -4,7 +4,7 @@
 
 #include "trabalho2.h"
 
-int vetorPrincipal[TAM];
+int *vetorPrincipal[TAM];
 
 /*
 Objetivo: criar estrutura auxiliar na posição 'posicao'.
@@ -21,16 +21,27 @@ int criarEstruturaAuxiliar(int posicao, int tamanho)
 {
 
     int retorno = 0;
-    // a posicao pode já existir estrutura auxiliar
-    retorno = JA_TEM_ESTRUTURA_AUXILIAR;
     // se posição é um valor válido {entre 1 e 10}
-    retorno = POSICAO_INVALIDA;
+    if(posicao < 1 || posicao > 10){
+        retorno = POSICAO_INVALIDA;
+    }
+     // o tamanho nao pode ser menor que 1
+    if (tamanho < 1){
+        retorno = TAMANHO_INVALIDO;
+    }
+    // a posicao pode já existir estrutura auxiliar
+    if (vetorPrincipal[posicao - 1] != NULL){
+        retorno = JA_TEM_ESTRUTURA_AUXILIAR;
+    }
+    vetorPrincipal[posicao - 1] = (int*)malloc(tamanho * sizeof(int));
     // o tamanho ser muito grande
-    retorno = SEM_ESPACO_DE_MEMORIA;
-    // o tamanho nao pode ser menor que 1
-    retorno = TAMANHO_INVALIDO;
+    if (vetorPrincipal[posicao - 1] == NULL){
+        retorno = SEM_ESPACO_DE_MEMORIA;
+    }
     // deu tudo certo, crie
-    retorno = SUCESSO;
+    if (retorno == 0){
+        retorno = SUCESSO;
+    }
 
     return retorno;
 }
@@ -265,6 +276,9 @@ Objetivo: inicializa o programa. deve ser chamado ao inicio do programa
 
 void inicializar()
 {
+    for(int i = 0; i < TAM; i++){
+        vetorPrincipal[i] = NULL;
+    }
 }
 
 /*
@@ -275,4 +289,9 @@ para poder liberar todos os espaços de memória das estruturas auxiliares.
 
 void finalizar()
 {
+    for(int i = 0; i < TAM; i++){
+        if(vetorPrincipal[i] != NULL){
+            free(vetorPrincipal[i]);
+        }
+    }
 }
