@@ -5,7 +5,8 @@
 #include "trabalho2.h"
 
 int *vetorPrincipal[TAM];
-
+int tamanhosEstruturas[TAM]; // Guarda o tamanho máximo de cada posição
+int qtdElementos[TAM];       // Guarda quantos elementos já foram inseridos em cada estrutura auxiliar
 /*
 Objetivo: criar estrutura auxiliar na posição 'posicao'.
 com tamanho 'tamanho'
@@ -58,9 +59,9 @@ CONSTANTES
 int inserirNumeroEmEstrutura(int posicao, int valor)
 {
     int retorno = 0;
-    int existeEstruturaAuxiliar = 0;
-    int temEspaco = 0;
-    int posicao_invalida = 0;
+    int posicao_invalida = (posicao < 1 || posicao > 10);
+    int existeEstruturaAuxiliar = (!posicao_invalida && vetorPrincipal[posicao - 1] != NULL);
+    int temEspaco = (existeEstruturaAuxiliar && qtdElementos[posicao - 1] < tamanhosEstruturas[posicao - 1]);
 
     if (posicao_invalida)
         retorno = POSICAO_INVALIDA;
@@ -72,6 +73,11 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
             if (temEspaco)
             {
                 //insere
+                if (vetorPrincipal[posicao - 1] != NULL)
+                {
+                    vetorPrincipal[posicao - 1][qtdElementos[posicao - 1]] = valor;
+                    qtdElementos[posicao - 1]++;
+                }
                 retorno = SUCESSO;
             }
             else
@@ -101,7 +107,41 @@ Rertono (int)
 */
 int excluirNumeroDoFinaldaEstrutura(int posicao)
 {
-    int retorno = SUCESSO;
+    int retorno = 0;
+    
+    int posicao_invalida = (posicao < 1 || posicao > 10);
+
+    int existeEstruturaAuxiliar = (!posicao_invalida && vetorPrincipal[posicao - 1] != NULL);
+
+    int estruturaVazia = (existeEstruturaAuxiliar && qtdElementos[posicao - 1] == 0);
+
+    if (posicao_invalida)
+    {
+        retorno = POSICAO_INVALIDA;
+    }
+    else
+    {
+        // Testar se existe a estrutura auxiliar
+        if (existeEstruturaAuxiliar)
+        {
+            // Testar se a estrutura NÃO está vazia
+            if (!estruturaVazia)
+            {
+                // Exclusão lógica: reduzimos o contador em 1
+                qtdElementos[posicao - 1]--;
+                retorno = SUCESSO;
+            }
+            else
+            {
+                retorno = ESTRUTURA_AUXILIAR_VAZIA;
+            }
+        }
+        else
+        {
+            retorno = SEM_ESTRUTURA_AUXILIAR;
+        }
+    }
+
     return retorno;
 }
 
